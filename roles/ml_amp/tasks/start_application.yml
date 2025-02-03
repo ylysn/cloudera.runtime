@@ -1,0 +1,16 @@
+---
+
+- name: Start application '{{ step.name }}'
+  tags: application
+  cloudera.runtime.ml_project_application:
+    endpoint: "{{ amp_endpoint }}"
+    api_key: "{{ amp_api_key }}"
+    project_id: "{{ __amp_project.project.id }}"
+    name: "{{ step.name }}"
+    auth: True
+    script: "{{ step.script }}"
+    subdomain: "{{ step.subdomain }}"
+    env: "{{ step.environment_variables | default(omit) }}"
+    runtime: "{{ __amp_runtimes.results[0].runtimes[0].image_identifier | default(omit) }}"
+    state: restarted
+  register: __step
